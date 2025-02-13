@@ -31,3 +31,19 @@
 	border: none;
 	border-radius: 5px;
 }
+
+.completeButton {
+	width: 4em;
+	height: 100%;
+	background-color: green;
+	color: white;
+	border: none;
+	border-radius: 5px;
+}
+
+.todoItem {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5em;
+	padding: 10px;
+}

@@ -23,6 +23,10 @@
 	border-radius: 5px;
 }
 
+.completeText {
+	text-decoration: line-through;
+}
+
 .completeButton {
 	width: 4em;
 	height: 100%;
@@ -32,8 +36,8 @@
 	border-radius: 5px;
 }
 
-
 .todoItem {
+	width: 640px;
 	display: flex;
 	flex-direction: row;
 	gap: 0.5em;
@@ -45,7 +49,6 @@
 	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: center;
 	gap: 0.25em;
 	padding-bottom: 15px;
 }
@@ -72,4 +75,14 @@
 	color: white;
 	border: none;
 	border-radius: 5px;
+}
+
+.filterSelect {
+	margin-top: 20px;
+	width: 100%;
+	height: 2em;
+	color: rgb(0, 0, 0);
+	border-radius: 5px;
+	border-color: gray;
+	background-color: rgb(207, 207, 207);
 }

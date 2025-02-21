@@ -2,6 +2,7 @@ import '../style/Todo.css'
 import { useState } from 'react'
 import { v4 as uuid } from 'uuid'
 import EditTodo from '../components/EditTodo'
+import AddTodo from '../components/AddTodo'
 
 // TODOリストの型定義
 type Todo = {
@@ -12,23 +13,16 @@ type Todo = {
 }
 
 function Todo() {
-	const [text, setText] = useState<string>(''); // 入力されたテキストを保持するstate
 	const [todos, setTodos] = useState<Todo[]>([]); // TODOリストを保持するstate
+	const [filter, setFilter] = useState<string>('incomplete'); // ToDoの表示フィルターを保持するstate
 
-	function addTodo(e: React.FormEvent<HTMLFormElement>) {
-		// TODOリストに追加する
-		if (!text.trim()) { // 入力が空の場合はアラート
-			alert('入力してください');
-			return;
-		};
-		e.preventDefault();
+	function addTodo(text: string) {
 		setTodos([...todos, {
 			id: uuid(),
 			text: text,
 			isComplete: false,
 			isEdit: false
 		}]);
-		setText('');
 	}
 
 	function completeTodo(id: string) {
@@ -75,30 +69,52 @@ function Todo() {
 		}));
 	}
 
+	function filterTodos(todos: Todo[], filter: string) {
+		// フィルターをかけたTODOリストを返す
+		switch (filter) {
+			case 'incomplete':
+				return todos.filter(todo => (!todo.isComplete));
+			case 'complete':
+				return todos.filter(todo => (todo.isComplete));
+			case 'all':
+				return todos;
+			default:
+				return todos;
+		}
+	}
+
 	return (
 		<>
 			<h1>
 				ToDoリスト
 			</h1>
-			<form onSubmit={addTodo} className='addForm' >
-				<input type="text" value={text} onChange={(e) => setText(e.target.value)} className='addText' />
-				<button type="submit" className='addButton'>追加</button>
-			</form>
+			<AddTodo addTodo={addTodo} />
+			<label>
+				<select value={filter} onChange={(e) => setFilter(e.target.value)} className='filterSelect'>
+					<option value="incomplete">未完了</option>
+					<option value="complete">完了</option>
+					<option value="all">全て</option>
+				</select>
+			</label>
 			<ul >
-				{todos.filter(todo => (!todo.isComplete)).map((todo) => (
+				{filterTodos(todos, filter).map((todo) => (
 					<div key={todo.id} >
 						<div className='todoItem'>
-							<li onClick={() => startEdit(todo.id)}>{todo.text}</li>
-							<button onClick={() => (completeTodo(todo.id))} className='completeButton'>完了</button>
+							<li onClick={() => startEdit(todo.id)} className={todo.isComplete ? "completeText" : ""}>{todo.text}</li>
+							{
+								!todo.isComplete &&
+								<button onClick={() => (completeTodo(todo.id))} className='completeButton'>完了</button>
+							}
 						</div>
-						{todo.isEdit && <EditTodo todoText={todo.text} id={todo.id} updateTodoText={updateTodoText} closeEdit={closeEdit} />}
+						{
+							todo.isEdit &&
+							<EditTodo todoText={todo.text} id={todo.id} updateTodoText={updateTodoText} closeEdit={closeEdit} />
+						}
 					</div>
 				))}
 			</ul>
 		</>
 	)
 }
-
-
 
 export default Todo;

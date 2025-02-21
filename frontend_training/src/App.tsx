@@ -5,15 +5,17 @@ import {
 	RouterProvider,
 	Route
 } from 'react-router-dom';
-import './App.css';
+
 // ルーティングで利用するコンポーネントをインポート
 import Todo from './views/Todo';
+import './App.css';
 
 function App() {
 	const router = createBrowserRouter(
 		createRoutesFromElements(
 			<>
 				<Route path="/" element={<Todo />} />
+
 			</>
 		)
 	);
